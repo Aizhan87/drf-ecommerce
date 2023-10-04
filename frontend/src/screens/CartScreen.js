@@ -8,6 +8,8 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 
 function CartScreen() {
   const navigate = useNavigate()
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
   const {id} = useParams()
   const location = useLocation()
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -30,9 +32,14 @@ function CartScreen() {
     dispatch(removeFromCart(id))
   }
 
-  const checkoutHandler = () =>[
-    navigate(`/login?redirect=shipping`)
-  ]
+  const checkoutHandler = () => {
+      if (!userInfo) {
+          navigate('/login')
+      } else {
+          navigate('/shipping')
+      }
+  }
+
 
 
   return (
