@@ -36,7 +36,7 @@ function ProfileScreen() {
         if (!userInfo) {
             navigate('/login')
         }else{
-            if(!user || !user.name || success){
+            if(!user || !user.name || success || userInfo._id !== user._id){
                 dispatch({type: USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders())
@@ -106,7 +106,7 @@ function ProfileScreen() {
                     <Form.Group controlId='passwordConfirm'>
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control
-                            type='passwordConfirm'
+                            type='password'
                             placeholder='Confirm Password'
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
