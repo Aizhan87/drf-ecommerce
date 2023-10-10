@@ -5,7 +5,8 @@ import {Table, Button, Row, Col} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {listProducts, deleteProduct} from '../actions/productActions'
+import {listProducts, deleteProduct, createProduct} from '../actions/productActions'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 
 function ProductListScreen() {
@@ -22,13 +23,24 @@ function ProductListScreen() {
     const productDelete = useSelector(state => state.productDelete)
     const {loading: loadingDelete, error: errorDelete, success: successDelete} = productDelete
 
+    const productCreate = useSelector(state => state.productCreate)
+    const {loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct} = productCreate
+
     useEffect(() => {
-        if(userInfo && userInfo.isAdmin) {
-            dispatch(listProducts())
-        }else{
+        dispatch({type: PRODUCT_CREATE_RESET})
+
+
+        if(!userInfo.isAdmin) {
             navigate('/login')
+        }else{
+            dispatch(listProducts())
         }
-    }, [dispatch, navigate, userInfo, successDelete])
+
+        if(successCreate){
+            navigate(`/admin/product/${createdProduct._id}/edit`)
+        }
+            
+    }, [dispatch, navigate, userInfo, successDelete, successCreate, createdProduct])
 
 
     const deleteHandler = (id) => {
@@ -37,8 +49,8 @@ function ProductListScreen() {
         }
     }
 
-    const createProductHandler = (product) => {
-
+    const createProductHandler = () => {
+        dispatch(createProduct())
     }
 
     return (
@@ -48,15 +60,22 @@ function ProductListScreen() {
                     <h1>Products</h1>
                 </Col>
                 <Col className='text-right'>
-                    <Button className='my-3' onClick={() => createProductHandler()}>
+                    <Button className='my-3' onClick={createProductHandler}>
                         <i className='fas fa-plus'></i> Create Product
                     </Button>
                 </Col>
             </Row>
-            {loadingDelete 
+
+            {loadingDelete && <Loader/>}
+            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
+            {loadingCreate && <Loader/>}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+
+            {loading 
             ? <Loader/> 
-            : errorDelete 
-            ? (<Message variant='danger'>{errorDelete}</Message>) 
+            : error 
+            ? (<Message variant='danger'>{error}</Message>) 
             : (<Table striped bordered hover responsive className='table-sm'>
                 <thead>
                     <tr>
