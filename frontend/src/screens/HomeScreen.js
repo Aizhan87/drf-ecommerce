@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import {useNavigate, useLocation} from 'react-router-dom'
 import Paginate from '../components/Paginate'
+import ProductCarousel from '../components/ProductCarousel'
 
 function HomeScreen() {
   const location = useLocation()
@@ -24,6 +25,7 @@ function HomeScreen() {
 
   return (
     <div>
+      {!keyword && <ProductCarousel/>}
         <h1>Latest Products</h1>
         {loading ? <Loader/>
         : error ? <Message variant='danger'>{error}</Message>
