@@ -56,3 +56,8 @@ h3{
 form div{
   margin-bottom: 1rem;
 }
+
+
+.visually-hidden{
+  display: none;
+}
