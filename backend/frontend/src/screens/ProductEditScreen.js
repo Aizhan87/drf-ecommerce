@@ -167,7 +167,7 @@ function ProductEditScreen() {
                         <Form.Label>Category</Form.Label>
                         <Form.Control 
                             type='text' 
-                            placeholder='Enter stock' 
+                            placeholder='Enter Category' 
                             value={category} 
                             onChange={(e) => setCategory(e.target.value)}>
                         </Form.Control>
@@ -177,7 +177,7 @@ function ProductEditScreen() {
                         <Form.Label>Description</Form.Label>
                         <Form.Control 
                             type='text' 
-                            placeholder='Enter stock' 
+                            placeholder='Enter Description' 
                             value={description} 
                             onChange={(e) => setDescription(e.target.value)}>
                         </Form.Control>
